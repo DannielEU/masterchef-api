@@ -66,7 +66,7 @@ La documentación interactiva de la API está disponible en Swagger:
 
 ## Endpoints principales
 
-### 🔐 Autenticación (`/auth`)
+### Autenticación (`/auth`)
 
 #### POST `/auth/register` - Registrar usuario
 **Request:**
@@ -111,7 +111,7 @@ La documentación interactiva de la API está disponible en Swagger:
 
 ---
 
-### 📺 Temporadas (`/temporada`)
+### Temporadas (`/temporada`)
 
 #### POST `/temporada` - Crear temporada
 **Request:**
@@ -167,7 +167,7 @@ La documentación interactiva de la API está disponible en Swagger:
 
 ---
 
-### 🍳 Recetas (`/recetas`)
+###  Recetas (`/recetas`)
 
 #### POST `/recetas` - Crear receta
 **Request:**
@@ -353,7 +353,7 @@ src/
 
 El proyecto está desplegado en Azure App Service:
 
-**URL de producción**: https://masterchef-api-guf0gvg6c8ebdkbm.canadacentral-01.azurewebsites.net
+**URL de producción**: https://masterchef-api-guf0gvg6c8ebdkbm.canadacentral-01.azurewebsites.net/api
 
 ## Licencia
 
