@@ -1,98 +1,360 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# MasterChef API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST para la aplicación MasterChef, construida con NestJS, MongoDB y TypeScript.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Descripción
 
-## Description
+Este proyecto es una API para gestionar recetas, usuarios y funcionalidades relacionadas con el ecosistema MasterChef. Utiliza el framework [NestJS](https://github.com/nestjs/nest) con TypeScript y MongoDB como base de datos.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Requisitos previos
 
-## Project setup
+- Node.js (v18 o superior)
+- npm o yarn
+- MongoDB (local o en la nube)
+
+## Instalación
 
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
+## Configuración
 
-```bash
-# development
-$ npm run start
+Crea un archivo `.env` en la raíz del proyecto con las siguientes variables de entorno:
 
-# watch mode
-$ npm run start:dev
+```env
+# MongoDB
+MONGODB_URI=tu_conexion_mongodb
 
-# production mode
-$ npm run start:prod
+# Puerto de la aplicación
+PORT=3000
+
+# Otras configuraciones necesarias
 ```
 
-## Run tests
+## Ejecutar el proyecto
+
+### Modo desarrollo
+```bash
+npm run start:dev
+```
+
+### Modo producción
+```bash
+# Compilar el proyecto
+npm run build
+
+# Ejecutar en producción
+npm run start:prod
+```
+
+### Otros comandos disponibles
+```bash
+# Desarrollo sin watch mode
+npm start
+
+# Modo debug
+npm run start:debug
+```
+
+## API Documentation (Swagger)
+
+La documentación interactiva de la API está disponible en Swagger:
+
+- **Producción (Azure)**: [https://masterchef-api-guf0gvg6c8ebdkbm.canadacentral-01.azurewebsites.net/api](https://masterchef-api-guf0gvg6c8ebdkbm.canadacentral-01.azurewebsites.net/api)
+- **Local**: `http://localhost:3000/api` (cuando corras el proyecto localmente)
+
+## Endpoints principales
+
+### 🔐 Autenticación (`/auth`)
+
+#### POST `/auth/register` - Registrar usuario
+**Request:**
+```json
+{
+  "email": "usuario@example.com",
+  "password": "MiPassword123",
+  "nombre": "Juan Pérez",
+  "rol": "participante",
+  "temporada": "507f1f77bcf86cd799439011"
+}
+```
+**Response (201):**
+```json
+{
+  "_id": "507f1f77bcf86cd799439022",
+  "email": "usuario@example.com",
+  "nombre": "Juan Pérez",
+  "rol": "participante",
+  "temporada": "507f1f77bcf86cd799439011"
+}
+```
+
+#### POST `/auth/login` - Iniciar sesión
+**Request:**
+```json
+{
+  "email": "usuario@example.com",
+  "password": "MiPassword123"
+}
+```
+**Response (200):**
+```json
+{
+  "_id": "507f1f77bcf86cd799439022",
+  "email": "usuario@example.com",
+  "nombre": "Juan Pérez",
+  "rol": "participante",
+  "temporada": "507f1f77bcf86cd799439011"
+}
+```
+
+---
+
+### 📺 Temporadas (`/temporada`)
+
+#### POST `/temporada` - Crear temporada
+**Request:**
+```json
+{
+  "nombre": "MasterChef España 2024",
+  "temporada": 12
+}
+```
+**Response (201):**
+```json
+{
+  "_id": "507f1f77bcf86cd799439011",
+  "nombre": "MasterChef España 2024",
+  "temporada": 12
+}
+```
+
+#### GET `/temporada` - Listar temporadas
+**Response (200):**
+```json
+[
+  {
+    "_id": "507f1f77bcf86cd799439011",
+    "nombre": "MasterChef España 2024",
+    "temporada": 12
+  }
+]
+```
+
+#### GET `/temporada/:id` - Obtener temporada por ID
+**Response (200):**
+```json
+{
+  "_id": "507f1f77bcf86cd799439011",
+  "nombre": "MasterChef España 2024",
+  "temporada": 12
+}
+```
+
+#### DELETE `/temporada/:id` - Eliminar temporada
+**Response (200):**
+```json
+{
+  "mensaje": "Temporada eliminada exitosamente",
+  "temporada": {
+    "_id": "507f1f77bcf86cd799439011",
+    "nombre": "MasterChef España 2024",
+    "temporada": 12
+  }
+}
+```
+
+---
+
+### 🍳 Recetas (`/recetas`)
+
+#### POST `/recetas` - Crear receta
+**Request:**
+```json
+{
+  "nombre": "Paella Valenciana",
+  "descripcion": "Receta tradicional de paella valenciana con pollo y conejo",
+  "ingredientes": ["arroz", "pollo", "conejo", "judías verdes", "garrofón", "tomate", "azafrán"],
+  "pasos": [
+    "Sofreír el pollo y conejo",
+    "Añadir las verduras",
+    "Agregar el arroz y el caldo",
+    "Cocinar 18 minutos"
+  ],
+  "tiempoPreparacion": 60,
+  "temporadaId": "507f1f77bcf86cd799439011",
+  "creadoPorId": "507f1f77bcf86cd799439022"
+}
+```
+**Response (201):**
+```json
+{
+  "_id": "507f1f77bcf86cd799439033",
+  "nombre": "Paella Valenciana",
+  "descripcion": "Receta tradicional de paella valenciana con pollo y conejo",
+  "ingredientes": ["arroz", "pollo", "conejo", "judías verdes", "garrofón", "tomate", "azafrán"],
+  "pasos": [
+    "Sofreír el pollo y conejo",
+    "Añadir las verduras",
+    "Agregar el arroz y el caldo",
+    "Cocinar 18 minutos"
+  ],
+  "tiempoPreparacion": 60,
+  "temporadaId": "507f1f77bcf86cd799439011",
+  "creadoPorId": "507f1f77bcf86cd799439022"
+}
+```
+
+#### GET `/recetas` - Listar recetas (con filtros opcionales)
+**Query params:**
+- `creadoPorId`: ID del usuario creador
+- `rol`: Rol del usuario (chef, participante)
+- `ingrediente`: Buscar por ingrediente
+- `temporadaId`: ID de la temporada
+
+**Ejemplos:**
+- `/recetas` - Todas las recetas
+- `/recetas?ingrediente=pollo` - Recetas con pollo
+- `/recetas?temporadaId=507f1f77bcf86cd799439011` - Recetas de una temporada
+
+**Response (200):**
+```json
+[
+  {
+    "_id": "507f1f77bcf86cd799439033",
+    "nombre": "Paella Valenciana",
+    "descripcion": "Receta tradicional de paella valenciana con pollo y conejo",
+    "ingredientes": ["arroz", "pollo", "conejo", "judías verdes", "garrofón", "tomate", "azafrán"],
+    "pasos": ["..."],
+    "tiempoPreparacion": 60,
+    "temporadaId": {...},
+    "creadoPorId": {...}
+  }
+]
+```
+
+#### GET `/recetas/:id` - Obtener receta por ID
+**Response (200):**
+```json
+{
+  "_id": "507f1f77bcf86cd799439033",
+  "nombre": "Paella Valenciana",
+  "descripcion": "Receta tradicional de paella valenciana con pollo y conejo",
+  "ingredientes": ["arroz", "pollo", "conejo", "judías verdes", "garrofón", "tomate", "azafrán"],
+  "pasos": [
+    "Sofreír el pollo y conejo",
+    "Añadir las verduras",
+    "Agregar el arroz y el caldo",
+    "Cocinar 18 minutos"
+  ],
+  "tiempoPreparacion": 60,
+  "temporadaId": {
+    "_id": "507f1f77bcf86cd799439011",
+    "nombre": "MasterChef España 2024",
+    "temporada": 12
+  },
+  "creadoPorId": {
+    "_id": "507f1f77bcf86cd799439022",
+    "email": "usuario@example.com",
+    "nombre": "Juan Pérez",
+    "rol": "participante"
+  }
+}
+```
+
+#### PATCH `/recetas/:id` - Actualizar receta
+**Request:**
+```json
+{
+  "nombre": "Paella Valenciana Mejorada",
+  "tiempoPreparacion": 75
+}
+```
+**Response (200):**
+```json
+{
+  "_id": "507f1f77bcf86cd799439033",
+  "nombre": "Paella Valenciana Mejorada",
+  "descripcion": "Receta tradicional de paella valenciana con pollo y conejo",
+  "ingredientes": ["arroz", "pollo", "conejo", "judías verdes", "garrofón", "tomate", "azafrán"],
+  "pasos": ["..."],
+  "tiempoPreparacion": 75,
+  "temporadaId": "507f1f77bcf86cd799439011",
+  "creadoPorId": "507f1f77bcf86cd799439022"
+}
+```
+
+#### DELETE `/recetas/:id` - Eliminar receta
+**Response (200):**
+```json
+{
+  "mensaje": "Receta eliminada exitosamente",
+  "receta": {
+    "_id": "507f1f77bcf86cd799439033",
+    "nombre": "Paella Valenciana",
+    "descripcion": "...",
+    "ingredientes": ["..."],
+    "pasos": ["..."]
+  }
+}
+```
+
+## Testing
 
 ```bash
-# unit tests
-$ npm run test
+# Unit tests
+npm run test
 
-# e2e tests
-$ npm run test:e2e
+# Tests en modo watch
+npm run test:watch
 
-# test coverage
-$ npm run test:cov
+# E2E tests
+npm run test:e2e
+
+# Cobertura de tests
+npm run test:cov
+
+# Debug tests
+npm run test:debug
+```
+
+## Linting y Formateo
+
+```bash
+# Ejecutar ESLint
+npm run lint
+
+# Formatear código con Prettier
+npm run format
+```
+
+## Tecnologías utilizadas
+
+- **Framework**: NestJS 11
+- **Base de datos**: MongoDB + Mongoose
+- **Validación**: class-validator, class-transformer
+- **Documentación**: Swagger/OpenAPI
+- **Seguridad**: bcrypt
+- **Testing**: Jest
+- **Lenguaje**: TypeScript
+
+## Estructura del proyecto
+
+```
+src/
+├── modules/         # Módulos de la aplicación
+├── common/          # Utilidades y recursos compartidos
+├── config/          # Configuración de la aplicación
+└── main.ts          # Punto de entrada
 ```
 
 ## Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+El proyecto está desplegado en Azure App Service:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+**URL de producción**: https://masterchef-api-guf0gvg6c8ebdkbm.canadacentral-01.azurewebsites.net
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+## Licencia
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Este proyecto es privado y no cuenta con licencia open source.
