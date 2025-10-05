@@ -18,6 +18,21 @@ export class Usuario extends Document {
 
   @Prop({ type: Types.ObjectId, ref: 'Temporada', required: true })
   temporada: Types.ObjectId;
+
+  @Prop({ default: false })
+  emailVerified: boolean;
+
+  @Prop()
+  verificationToken?: string;
+
+  @Prop()
+  verificationTokenExpires?: Date;
+
+  @Prop()
+  resetPasswordToken?: string;
+
+  @Prop()
+  resetPasswordExpires?: Date;
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);

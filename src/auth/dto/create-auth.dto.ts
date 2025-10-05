@@ -67,3 +67,44 @@ export class LoginDto {
   @IsNotEmpty()
   password: string;
 }
+
+export class ForgotPasswordDto {
+  @ApiProperty({
+    description: 'Correo electrónico del usuario',
+    example: 'usuario@example.com',
+    format: 'email'
+  })
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+}
+
+export class ResetPasswordDto {
+  @ApiProperty({
+    description: 'Token de recuperación recibido por email',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+  })
+  @IsString()
+  @IsNotEmpty()
+  token: string;
+
+  @ApiProperty({
+    description: 'Nueva contraseña (mínimo 6 caracteres)',
+    example: 'nuevaPassword123',
+    minLength: 6
+  })
+  @IsString()
+  @MinLength(6)
+  @IsNotEmpty()
+  password: string;
+}
+
+export class VerifyEmailDto {
+  @ApiProperty({
+    description: 'Token de verificación recibido por email',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+  })
+  @IsString()
+  @IsNotEmpty()
+  token: string;
+}
